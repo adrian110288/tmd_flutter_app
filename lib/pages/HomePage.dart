@@ -1,7 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:tmd_app/api/ApiService.dart';
 import 'package:tmd_app/api/api_const.dart';
 import 'package:tmd_app/api/models/Movie.dart';
+import 'package:tmd_app/pages/MovieDetail.dart';
 import 'package:tmd_app/pages/Rating.dart';
 import 'package:tmd_app/res/colors.dart';
 
@@ -25,6 +27,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildCardItem(BuildContext context, int index) {
     Movie movie = movieList[index];
+    var imageUrl = "$API_IMAGE_BASE_URL/original/${movie.posterPath}";
 
     var imageShadow = [
       new BoxShadow(
@@ -40,8 +43,10 @@ class _HomePageState extends State<HomePage> {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(4.0),
-        child: Image.network(
-          "$API_IMAGE_BASE_URL/original/${movie.posterPath}",
+        child: Image(
+          image: CachedNetworkImageProvider(
+            imageUrl,
+          ),
           height: 100,
           fit: BoxFit.fitHeight,
         ),
@@ -82,26 +87,35 @@ class _HomePageState extends State<HomePage> {
       ),
     );
 
-    return Padding(
-      padding: const EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0),
-      child: Column(
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              image,
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[title, rating, miniDescription],
+    var _itemTapHandler = () =>
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => MovieDetailPage(movie.id)),
+        );
+
+    return GestureDetector(
+      onTap: _itemTapHandler,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0),
+        child: Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                image,
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[title, rating, miniDescription],
+                    ),
                   ),
-                ),
-              )
-            ],
-          ),
-          divider
-        ],
+                )
+              ],
+            ),
+            divider
+          ],
+        ),
       ),
     );
   }
@@ -113,9 +127,9 @@ class _HomePageState extends State<HomePage> {
         title: Center(
           child: Text("Trending",
               style: Theme.of(context).textTheme.headline.copyWith(
-                    color: Colors.white,
-                    letterSpacing: 1.8,
-                  )),
+                color: Colors.white,
+                letterSpacing: 1.8,
+              )),
         ),
       ),
       backgroundColor: WINDOW_COLOR,
