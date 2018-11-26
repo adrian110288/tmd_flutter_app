@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tmd_app/api/ApiService.dart';
 import 'package:tmd_app/api/api_const.dart';
 import 'package:tmd_app/api/models/Movie.dart';
-import 'package:tmd_app/pages/MovieDetail.dart';
+import 'package:tmd_app/pages/MovieDetailPage.dart';
 import 'package:tmd_app/pages/Rating.dart';
 import 'package:tmd_app/res/colors.dart';
 
@@ -90,7 +90,7 @@ class _HomePageState extends State<HomePage> {
     var _itemTapHandler = () =>
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => MovieDetailPage(movie.id)),
+          MaterialPageRoute(builder: (context) => MovieDetailPage(movie)),
         );
 
     return GestureDetector(

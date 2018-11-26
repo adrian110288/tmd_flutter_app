@@ -6,9 +6,11 @@ class Rating extends StatelessWidget {
   final double currentRating;
   final Color activeColor;
   final Color inactiveColor;
+  final bool showRatingLabel;
 
   Rating(this.icon, this.maxRating, this.currentRating, this.activeColor,
-      this.inactiveColor);
+      this.inactiveColor,
+      {this.showRatingLabel: false});
 
   Row _buildRating() {
     List<Widget> rateIconList = List<Widget>();
@@ -27,20 +29,27 @@ class Rating extends StatelessWidget {
       ));
     }
 
-//    var textRating = Container(
-//      padding: const EdgeInsets.only(left: 12.0),
-//      child: RichText(
-//        text: TextSpan(
-//          children: <TextSpan>[
-//            TextSpan(text: "$currentRating/", style: TextStyle(fontWeight: FontWeight.w900, color: this.activeColor)),
-//            TextSpan(text: "$maxRating", style: TextStyle(fontWeight: FontWeight.w900, color: this.inactiveColor)),
-//          ],
-//
-//        ),
-//      ),
-//    );
-//
-//    rateIconList.add(textRating);
+    if (showRatingLabel) {
+      var textRating = Container(
+        padding: const EdgeInsets.only(left: 12.0),
+        child: RichText(
+          text: TextSpan(
+            children: <TextSpan>[
+              TextSpan(
+                  text: "$currentRating/",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w900, color: this.activeColor)),
+              TextSpan(
+                  text: "$maxRating",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w900, color: this.inactiveColor)),
+            ],
+          ),
+        ),
+      );
+
+      rateIconList.add(textRating);
+    }
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
